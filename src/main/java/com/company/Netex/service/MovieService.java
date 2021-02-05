@@ -20,7 +20,6 @@ public class MovieService {
     @Autowired
     private MovieRepo repository;
     public static final String POSTS_API_URL = "http://www.omdbapi.com/?i=tt3896198&apikey=76003b78&s=Avengers";
-    public static final String POSTS_API_URL_SEARCH = "http://www.omdbapi.com/?i=tt3896198&apikey=76003b78&s=Avengers";
 
     public MovieService(MovieRepo repository) throws IOException, InterruptedException {
         this.repository = repository;
@@ -30,18 +29,18 @@ public class MovieService {
         return repository.save(movie);
     }
 
-    //TO DO : with @PathVariable String {movieName} instead of POSTS_API_URL
-    public static List<Movie> getSearchResponse(String POSTS_API_URL_SEARCH) throws IOException, InterruptedException{
+    public static List<Movie> getSearchResponse(String url) throws IOException, InterruptedException, IllegalArgumentException{
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
                 .GET()
                 .header("accept", "application/json")
-                .uri(URI.create(POSTS_API_URL))
+                .uri(URI.create(url))
                 .build();
 
         //Parsing into objects
         ObjectMapper mapper = new ObjectMapper();
         MovieSearch movieSearch = mapper.readValue(client.send(request, HttpResponse.BodyHandlers.ofString()).body(), new TypeReference<MovieSearch>() {});
+
         List<Movie> movies = movieSearch.getMovieList();
         return movies;
     }

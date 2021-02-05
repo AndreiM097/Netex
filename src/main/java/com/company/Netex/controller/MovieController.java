@@ -2,23 +2,14 @@ package com.company.Netex.controller;
 
 
 import com.company.Netex.model.Movie;
-import com.company.Netex.model.MovieSearch;
 import com.company.Netex.service.MovieService;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
 import java.util.*;
 
-import static com.company.Netex.service.MovieService.getSearchResponse;
+import static com.company.Netex.service.MovieService.*;
 
 @RestController
 public class MovieController {
@@ -29,9 +20,11 @@ public class MovieController {
     @Autowired
     private MovieService service;
 
-    @GetMapping("/searchMovies")
-    public List<Movie> searchMovies() throws IOException, InterruptedException{
-        return service.saveMovies(getSearchResponse(MovieService.POSTS_API_URL_SEARCH));
+    @GetMapping("/searchMovies/{search}")
+    public void searchMovies(@PathVariable String search) throws IOException, InterruptedException, IllegalArgumentException {
+        for(int i = 1; i <200; i++) {
+            service.saveMovies(getSearchResponse("http://www.omdbapi.com/?i=tt3896198&apikey=76003b78&page=" + i + "&s=" + search + "/"));
+        }
     }
 
     @PostMapping("/addMovie")
