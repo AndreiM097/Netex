@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
+import org.apache.solr.client.solrj.beans.Field;
 
 import javax.persistence.*;
 
@@ -13,26 +14,32 @@ import javax.persistence.*;
 public class Movie {
 
     @Id
+    @Field
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     private int id;
 
+    @Field
     @JsonProperty("Title")
     @Column(name = "Title")
     private String title;
 
+    @Field
     @JsonProperty("Year")
     @Column(name = "Year")
     private String year;
 
+    @Field
     @JsonProperty("imdbID")
     @Column(name = "imdbID")
     private String imdbID;
 
+    @Field
     @JsonProperty("Type")
     @Column(name = "Type")
     private String type;
 
+    @Field
     @JsonProperty("Poster")
     @Column(name = "Poster") 
     private String poster;

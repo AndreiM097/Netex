@@ -1,12 +1,19 @@
 package com.company.Netex.service;
 
+
 import com.company.Netex.model.Movie;
 import com.company.Netex.model.MovieSearch;
+import com.company.Netex.model.QMovie;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.querydsl.core.types.Predicate;
+import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.stereotype.Service;
 import com.company.Netex.repository.MovieRepo;
+
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -16,9 +23,14 @@ import java.util.List;
 
 @Service
 public class MovieService {
+    MovieRepo repository;
 
-    @Autowired
-    private MovieRepo repository;
+    public JPAQueryFactory getJpaQueryFactory(){
+        EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("movies");
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        return new JPAQueryFactory(entityManager);
+    }
+
     public static final String POSTS_API_URL = "http://www.omdbapi.com/?i=tt3896198&apikey=76003b78&s=Avengers";
 
     public MovieService(MovieRepo repository) throws IOException, InterruptedException {
